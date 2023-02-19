@@ -20,7 +20,7 @@ if not os.path.exists(folder_name):
 
 experiment_settings = {
     'load_trajectory': True,
-    'trajectory_filename': 'obs_env_02.19.2023_20.57.56',
+    'trajectory_filename': 'obs_env_02.19.2023_21.02.56',
     # whether load the existing trajectory or not
     'planning_algorithm': 'path_planning_and_minimum_snap',
     # options: 'competition_planning', 'path_planning_and_minimum_snap'
