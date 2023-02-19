@@ -1,0 +1,78 @@
+# origin of the coorninate is at the left up corner of the map
+# z↖;y→;x↓
+obstacle_1:
+  type: box
+  center: [1.2, 1.5, 1.5]
+  half_extend: [.15, 1.5, 1.5]
+  yaw_rad: 0.
+  fixed: True
+
+obstacle_2:
+  type: box
+  center: [0.6, 4.2, 1.5]
+  half_extend: [.15, .15, 1.5]
+  yaw_rad: 0.
+  fixed: False
+
+obstacle_3:
+  type: box
+  center: [3., 3., .9]
+  half_extend: [.15, .5, .9]
+  yaw_rad: 0.
+  fixed: True
+
+obstacle_4:
+  type: box
+  center: [5., 2.7, 2.]
+  half_extend: [1.2, .2, 1.]
+  yaw_rad: 2.4
+  fixed: True
+
+obstacle_5:
+  type: box
+  center: [5., 4.3, 1.5]
+  half_extend: [.15, .7, 1.5]
+  yaw_rad: 1.66
+  fixed: False
+
+obstacle_6:
+  type: box
+  center: [7.1, 1.4, 1.2]
+  half_extend: [.15, .15, 1.2]
+  yaw_rad: 0.53
+  fixed: False
+
+obstacle_7:
+  type: box
+  center: [7.3, 4., 1.8]
+  half_extend: [.7, .2, .9]
+  yaw_rad: 0
+  fixed: True
+
+obstacle_8:
+  type: cylinder
+  center: [2.8, 1.4, 1.1]
+  radius: .3
+  height: 2.2
+  fixed: False
+
+obstacle_9:
+  type: cylinder
+  center: [4.2, 1.9, 1.5]
+  radius: .35
+  height: 3.
+  fixed: False
+
+obstacle_10:
+  type: cylinder
+  center: [6.3, .8, 1.1]
+  radius: .2
+  height: 2
+  fixed: True
+
+obstacle_11:
+  type: cylinder
+  center: [3., 4.5, .6]
+  radius: .3
+  height: .6
+  fixed: True

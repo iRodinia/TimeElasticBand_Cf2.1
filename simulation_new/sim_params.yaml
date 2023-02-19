@@ -1,0 +1,230 @@
+# Configuration
+num_episodes: 1 # Customizable number of episodes (NOTE: solutions that require fewer episode will receive higher scores)
+verbose: False # Boolean passed to the Controller class, can be used to turn on and off additional printouts
+
+# Environment
+quadrotor_config:
+  seed: 58 # Random seed
+  reseed_on_reset: True # Whether to re-seed the random number generator between episodes
+  camera_view: [5, -40, -40, 0.5, -1, 0.5] # Distance, yaw, pitch, x, y, z target position
+  episode_len_sec: 100  # Maximum episode duration, in seconds
+
+  done_on_violation: False # Whether `done` becomes True when a constraint is violated
+  done_on_completion: True # Whether `done` becomes True when the task is completed (traveled all gates and 2'' hover at stabilization_goal)
+  done_on_collision: True # Whether `done` becomes True when a collision happens
+  cost: time_elastic_band  # Self-defined cost function
+  
+  task: stabilization
+  task_info:
+    site_size: [8., 5., 3.]
+    stabilization_goal: [7.5, 4.7, 0.75]  # Final goal (target position in x-y-z)
+    stabilization_goal_tolerance: 0.2
+  
+  # Randomization of the quadrotor inertial properties
+  randomized_inertial_prop: False
+  inertial_prop_randomization_info:
+    M:
+      distrib: "uniform"
+      low: -0.01
+      high: 0.01
+    Ixx:
+      distrib: "uniform"
+      low: -0.000001
+      high: 0.000001
+    Iyy:
+      distrib: "uniform"
+      low: -0.000001
+      high: 0.000001
+    Izz:
+      distrib: "uniform"
+      low: -0.000001
+      high: 0.000001
+
+  # Nominal (pre-randomization) initial state
+  init_state:
+    init_x: 0
+    init_x_dot: 0
+    init_y: 0
+    init_y_dot: 0
+    init_z: 0.05
+    init_z_dot: 0
+    init_phi: 0
+    init_theta: 0
+    init_psi: 0
+    init_p: 0
+    init_q: 0
+    init_r: 0
+  
+  # Randomization of the initial state
+  randomized_init: True
+  init_state_randomization_info:
+    init_x: 
+      distrib: "uniform"
+      low: -0.1
+      high: 0.1
+    init_y: 
+      distrib: "uniform"
+      low: -0.1
+      high: 0.1
+    init_z:
+      distrib: "uniform"
+      low: 0.0
+      high: 0.02
+    init_phi:
+      distrib: "uniform"
+      low: -0.1
+      high: 0.1
+    init_theta:
+      distrib: "uniform"
+      low: -0.1
+      high: 0.1
+    init_psi:
+      distrib: "uniform"
+      low: -0.1
+      high: 0.1
+  
+  # Constraints
+  constraints:
+    # Input constraints
+    - constraint_form: default_constraint
+      constrained_variable: input
+    # State constraints
+    - constraint_form: bounded_constraint
+      constrained_variable: state
+      active_dims: [0, 2, 4] # The uncommented entries in the upper_bounds/lower_bounds vectors below
+      upper_bounds:
+      - 5     # x
+      # - 100 # x_dot
+      - 5     # y
+      # - 100 # y_dot
+      - 2     # z
+      # - 100 # z_dot
+      # - 3   # phi
+      # - 3   # theta
+      # - 3   # psi
+      # - 10  # p
+      # - 10  # q
+      # - 10  # r
+      lower_bounds:
+      - -5     # x
+      # - -100 # x_dot
+      - -5     # y
+      # - -100 # y_dot
+      - -0.5   # z
+      # - -100 # z_dot
+      # - -3   # phi
+      # - -3   # theta
+      # - -3   # psi
+      # - -10  # p
+      # - -10  # q
+      # - -10  # r
+
+  # Disturbances
+  # disturbances:
+  #   # Additive noise on the commanded input action
+  #   action:
+  #     - disturbance_func: white_noise
+  #       std: 0.001
+  #   # Random external force applied to the quadrotor (e.g. a push or wind)
+  #   dynamics:
+  #     - disturbance_func: uniform
+  #       low: [-0.1, -0.1, -0.1]
+  #       high: [0.1, 0.1, 0.1]
+
+  # Nominal (pre-randomization) information of obstacles
+  obstacles:
+    obstacle_1:
+      type: box
+      center: [1.2, 1.5, 1.5]
+      half_extend: [.15, 1.5, 1.5]
+      yaw_rad: 0.
+      fixed: True
+
+    obstacle_2:
+      type: box
+      center: [0.6, 4.2, 1.5]
+      half_extend: [.15, .15, 1.5]
+      yaw_rad: 0.
+      fixed: False
+    
+    obstacle_3:
+      type: box
+      center: [3., 3., .9]
+      half_extend: [.15, .5, .9]
+      yaw_rad: 0.
+      fixed: True
+    
+    obstacle_4:
+      type: box
+      center: [5., 2.7, 2.]
+      half_extend: [1.2, .2, 1.]
+      yaw_rad: 2.4
+      fixed: True
+    
+    obstacle_5:
+      type: box
+      center: [5., 4.3, 1.5]
+      half_extend: [.15, .7, 1.5]
+      yaw_rad: 0.
+      fixed: False
+    
+    obstacle_6:
+      type: box
+      center: [7.1, 1.4, 1.2]
+      half_extend: [.15, .15, 1.2]
+      yaw_rad: 0.53
+      fixed: False
+    
+    obstacle_7:
+      type: box
+      center: [7.3, 4., 1.8]
+      half_extend: [.7, .2, .9]
+      yaw_rad: 0
+      fixed: True
+    
+    obstacle_8:
+      type: cylinder
+      center: [2.8, 1.4, 1.1]
+      radius: .3
+      height: 2.2
+      fixed: False
+    
+    obstacle_9:
+      type: cylinder
+      center: [4.2, 1.9, 1.5]
+      radius: .35
+      height: 3.
+      fixed: False
+    
+    obstacle_10:
+      type: cylinder
+      center: [6.3, .8, 1.1]
+      radius: .2
+      height: 2
+      fixed: True
+    
+    obstacle_11:
+      type: cylinder
+      center: [3., 4.5, .6]
+      radius: .3
+      height: .6
+      fixed: True
+
+  # Randomization of the obstacles positions
+  randomized_obstacles: False
+  obstacles_randomization_info:
+    positions:
+      distrib: "uniform"
+      low: -0.15
+      high: 0.15
+
+  
+
+
+
+  # Do NOT edit
+  quad_type: 3  # 3D quadrotor
+  info_in_reset: True # Info dictionary as second return value (after the initial observation) of env.reset()
+  normalized_rl_action_space: False
+  done_on_out_of_bound: False
+
