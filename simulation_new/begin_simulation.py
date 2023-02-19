@@ -158,7 +158,7 @@ def run():
 
         obs = [curr_x, vel[0], curr_y, vel[1], curr_z, vel[2], 
                 rotate[0], rotate[1], rotate[2], 0, 0, 0]
-        target_pos, target_vel, target_acc, target_omega, target_yaw = commander.cmdSimulation(curr_time, obs, resample=True, info=info)
+        target_pos, target_vel, target_acc, target_omega, target_yaw = commander.cmdSimulation(curr_time, obs, resample=False, info=info)
 
         target_pos = pos_cal(target_pos, 0)
 
@@ -169,7 +169,7 @@ def run():
                   target_acc[0], target_acc[1], target_acc[2], target_yaw, target_omega[0], target_omega[1], target_omega[2]]
         logger.log(0, curr_time, obs, target)
         timeHelper.sleep(0.05)
-        if (abs(ref_pos[0] - curr_x) <= 0.03) and (abs(ref_pos[1] - curr_y) <= 0.03) and (abs(ref_pos[2] - curr_z) <= 0.05):
+        if (abs(ref_pos[0] - curr_x) <= 0.03) and (abs(ref_pos[1] - curr_y) <= 0.03) and (abs(ref_pos[2] - curr_z) <= 0.05) or (curr_z <= 0.07):
             # timeHelper.sleep(0.03)
             # cf.goTo([1.5, 1.5, 0.05], 0, duration=5)
             # timeHelper.sleep(5)

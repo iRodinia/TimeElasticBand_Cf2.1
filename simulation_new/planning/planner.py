@@ -20,7 +20,7 @@ if not os.path.exists(folder_name):
 
 experiment_settings = {
     'load_trajectory': True,
-    'trajectory_filename': 'traj1',
+    'trajectory_filename': 'obs_env_02.19.2023_20.57.56',
     # whether load the existing trajectory or not
     'planning_algorithm': 'path_planning_and_minimum_snap',
     # options: 'competition_planning', 'path_planning_and_minimum_snap'
@@ -80,7 +80,7 @@ class Planner():
         else:
             blank_map = BlankGridMap(initial_info["site_size"][0], initial_info["site_size"][1], initial_info["site_size"][2])
             add_obstacles_to_gridmap(blank_map, self.OBSTACLES)
-            blank_map.plot(grid=True)
+            # blank_map.plot(grid=True)
 
             start_pos = init_pos
             goal_pos = [initial_info["x_reference"][0], initial_info["x_reference"][2], initial_info["x_reference"][4]]
@@ -98,7 +98,7 @@ class Planner():
                 traj_plan_params = {"ctrl_time": self.EPISODE_LEN_SEC, "ctrl_freq": self.CTRL_FREQ,
                                     "start_pos": start_pos, "stop_pos": goal_pos,
                                     "uav_radius": 0.075, "accuracy": blank_map.cell_size,
-                                    "path_insert_point_dist_min": 0.1,"traj_max_vel": 1.2, "traj_gamma": 10.}
+                                    "path_insert_point_dist_min": 0.1,"traj_max_vel": 10., "traj_gamma": 300000.}
                 planner = TrajGenerator2(blank_map, traj_plan_params)
             
             else:
