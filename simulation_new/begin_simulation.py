@@ -53,18 +53,18 @@ def quat2eulers(q0:float, q1:float, q2:float, q3:float):
 
 def pos_cal(pos, mode): # mode = 1: real -> optitrack
                         # else    : opti -> real
-    OFFSET = [1.46, 1, 0]
+    OFFSET = [0.01, -0.03, 0]
     if mode == 1:
         return [pos[0] + OFFSET[0], pos[1] + OFFSET[1], pos[2] + OFFSET[2]]
     else:
         return [pos[0] - OFFSET[0], pos[1] - OFFSET[1], pos[2] - OFFSET[2]]
     
-obs_pos_1_opti = [1.12, 0.405, 0.45]
-obs_pos_2_opti = [0.765, 1.365, 0.45]
-obs_pos_3_opti = [0.08, 0.605, 0.45]
-obs_pos_4_opti = [-0.52, 1.28, 0.45]
-obs_pos_5_opti = [-0.33, -0.51, 0.45]
-obs_pos_6_opti = [-1.07, 0.25, 0.32]
+obs_pos_1_opti = [1.10, 0.51, 0.45]
+obs_pos_2_opti = [2,58, 1.41, 0.45]
+obs_pos_3_opti = [2.24, 2.38, 0.45]
+obs_pos_4_opti = [1.55, 1.63, 0.45]
+obs_pos_5_opti = [0.96, 2.31, 0.45]
+obs_pos_6_opti = [0.38, 1.26, 0.32]
 
 obs_dict = {"obs1":{"type":"box", "center":pos_cal(obs_pos_1_opti, 1), 
                     "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0, "fixed":True}, 
@@ -109,6 +109,7 @@ def run():
     ref_pos = [info["x_reference"][0], info["x_reference"][2], info["x_reference"][4]]
     start_pos = pos_cal([obs[0], obs[2], obs[4]], 0)
 
+    resample = True
     # Create a logger and counters
     logger = Logger(logging_freq_hz=CTRL_FREQ)
 
@@ -158,7 +159,7 @@ def run():
 
         obs = [curr_x, vel[0], curr_y, vel[1], curr_z, vel[2], 
                 rotate[0], rotate[1], rotate[2], 0, 0, 0]
-        target_pos, target_vel, target_acc, target_omega, target_yaw = commander.cmdSimulation(curr_time, obs, resample=False, info=info)
+        target_pos, target_vel, target_acc, target_omega, target_yaw = commander.cmdSimulation(curr_time, obs, resample=resample, info=info)
 
         target_pos = pos_cal(target_pos, 0)
 
@@ -173,7 +174,7 @@ def run():
             # timeHelper.sleep(0.03)
             # cf.goTo([1.5, 1.5, 0.05], 0, duration=5)
             # timeHelper.sleep(5)
-            logger.save()
+            logger.save(new_feature=resample)
             break
     # Close the environment and print timing statistics.
 

@@ -102,7 +102,7 @@ class AdaptiveSampler:
         #         self.slow_mode = True
         drate = min(pdrate, cdrate) if pdrate <= -0.05 else cdrate
         ratio = self.last_ratio + drate*self.dt
-        ratio = max(0.05, ratio)
+        ratio = max(0.01, ratio)
         self.last_ratio = ratio
         return ratio
 

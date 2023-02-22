@@ -7,7 +7,7 @@ class Resampler:
     def __init__(self, dt, type: str):
         self.type = type
         self.dt = dt
-        self.time_ahead = 0.1
+        self.time_ahead = 0.08
         if type == "adapt":
             pid_sampler_params = {
                 'max_acc_pred': 1.3,
