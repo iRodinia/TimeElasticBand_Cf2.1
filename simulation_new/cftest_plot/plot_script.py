@@ -109,7 +109,7 @@ def target_modification(ref_arrow):
         pos_new = pos_cal([x, y, z], 1)
         ref_arrow[0,i] = pos_new[0]
         ref_arrow[1,i] = pos_new[1]
-        ref_arrow[2,i] = pos_new[2] + 0.03
+        ref_arrow[2,i] = pos_new[2] + 0.02
     return ref_arrow
 
     
@@ -336,8 +336,8 @@ def plot_pos_tracking_error_and_TRMSE(resampled_log, direct_log):
 
 if __name__ == '__main__':
     abs_path = os.path.abspath(os.path.dirname(__file__))
-    complete_file = abs_path + "/complete3" + ".npy"
-    fail_file = abs_path + "/fall3" + ".npy"
+    complete_file = abs_path + "/complete_video_remake" + ".npy"
+    fail_file = abs_path + "/fall_video" + ".npy"
 
     complete_data = np.load(complete_file, allow_pickle=True)
     fail_data = np.load(fail_file, allow_pickle=True)

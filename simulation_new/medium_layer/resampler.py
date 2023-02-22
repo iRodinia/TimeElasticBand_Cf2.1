@@ -18,7 +18,7 @@ class Resampler:
                                         # calculate trajectory bending degree
                 'l_error_weight': 2., # assume the weight of s_error is 1
                 'k_D': 0.1,
-                'error_threshold': 0.1
+                'error_threshold': 0.05
             }
             self.sampler = AdaptiveSampler(pid_sampler_params)
     

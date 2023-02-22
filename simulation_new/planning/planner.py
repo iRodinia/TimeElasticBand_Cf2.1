@@ -20,7 +20,7 @@ if not os.path.exists(folder_name):
 
 experiment_settings = {
     'load_trajectory': True,
-    'trajectory_filename': 'obs_env_02.22.2023_16.23.46',
+    'trajectory_filename': 'traj_video1',
     # whether load the existing trajectory or not
     'planning_algorithm': 'path_planning_and_minimum_snap',
     # options: 'competition_planning', 'path_planning_and_minimum_snap'
@@ -98,7 +98,7 @@ class Planner():
                 traj_plan_params = {"ctrl_time": self.EPISODE_LEN_SEC, "ctrl_freq": self.CTRL_FREQ,
                                     "start_pos": start_pos, "stop_pos": goal_pos,
                                     "uav_radius": 0.075, "accuracy": blank_map.cell_size,
-                                    "path_insert_point_dist_min": 0.1,"traj_max_vel": 9., "traj_gamma": 200000.}
+                                    "path_insert_point_dist_min": 0.1,"traj_max_vel": 4., "traj_gamma": 10000.}
                 planner = TrajGenerator2(blank_map, traj_plan_params)
             
             else:

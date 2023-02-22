@@ -155,8 +155,8 @@ def run():
             vel = [0, 0, 0]
         else:
             vel = diff([curr_x, curr_y, curr_z], [last_x, last_y, last_z], dt)
-        rotate = quat2eulers(quat[3], quat[0], quat[1], quat[2])
 
+        rotate = quat2eulers(quat[3], quat[0], quat[1], quat[2])
         obs = [curr_x, vel[0], curr_y, vel[1], curr_z, vel[2], 
                 rotate[0], rotate[1], rotate[2], 0, 0, 0]
         target_pos, target_vel, target_acc, target_omega, target_yaw = commander.cmdSimulation(curr_time, obs, resample=resample, info=info)
@@ -171,9 +171,8 @@ def run():
         logger.log(0, curr_time, obs, target)
         timeHelper.sleep(0.05)
         if (abs(ref_pos[0] - curr_x) <= 0.03) and (abs(ref_pos[1] - curr_y) <= 0.03) and (abs(ref_pos[2] - curr_z) <= 0.05) or (curr_z <= 0.07):
-            # timeHelper.sleep(0.03)
-            # cf.goTo([1.5, 1.5, 0.05], 0, duration=5)
-            # timeHelper.sleep(5)
+            timeHelper.sleep(0.05)
+            cf.cmdStop()
             logger.save(new_feature=resample)
             break
     # Close the environment and print timing statistics.
