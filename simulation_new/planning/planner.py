@@ -99,6 +99,8 @@ class Planner():
                                     "start_pos": start_pos, "stop_pos": goal_pos,
                                     "uav_radius": 0.075, "accuracy": blank_map.cell_size,
                                     "path_insert_point_dist_min": 0.1,"traj_max_vel": 4., "traj_gamma": 10000.}
+                # fast: v_max = 9, gamma = 2*10^5
+                # normal: v_max = 4, gamma = 10^4
                 planner = TrajGenerator2(blank_map, traj_plan_params)
             
             else:
