@@ -6,10 +6,10 @@ Run as:
     $ python3 getting_started.py --overrides ./sim_parameters.yaml
 
 """
+import os
 import sys
-sys.path.append('/home/caesarzhang/Documents/TimeElasticBand/cf2.1_test/TEB-simulation/simulation')
-# sys.path.append('/home/user/fqm/Project/dir1')
-# sys.path.append('/home/user/fqm/Project/dir2')
+sys.path.append('/home/cz_linux/Documents/TimeElasticBand_Cf2.1')
+
 import numpy as np
 import math
 from rich.tree import Tree
@@ -86,7 +86,8 @@ def run():
     """
     The main function for one simulation test.
     """
-    swarm = Crazyswarm()
+    cf_settings = os.path.abspath(os.path.dirname(__file__)) + "/crazyflies.yaml"
+    swarm = Crazyswarm(crazyflies_yaml=cf_settings)
     timeHelper = swarm.timeHelper
     cf = swarm.allcfs.crazyflies[0]
 
