@@ -9,11 +9,11 @@ def main():
     timeHelper = swarm.timeHelper
     cf = swarm.allcfs.crazyflies[0]
 
-    cf.takeoff(targetHeight=1.0, duration=TAKEOFF_DURATION)
+    cf.takeoff(targetHeight=1.2, duration=TAKEOFF_DURATION)
     timeHelper.sleep(5.0)
-    cf.goTo([-1.49, -1.48, 1.0], 0., 5.0)
+    cf.goTo([-1.49, -1.48, 1.2], 0., 5.0)
     timeHelper.sleep(5.0)
-    cf.land(targetHeight=0.06, duration=2.5)
+    cf.land(targetHeight=0.06, duration=5.0)
     timeHelper.sleep(TAKEOFF_DURATION)
 
 

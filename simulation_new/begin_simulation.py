@@ -59,32 +59,31 @@ def pos_cal(pos, mode): # mode = 1: plan -> opti
     else:
         return [pos[0] - OFFSET[0], pos[1] - OFFSET[1], pos[2] - OFFSET[2]]
     
-obs_pos_1_opti = [-1.18, -0.73, 0.45]
-obs_pos_2_opti = [-1.24, 1.60, 0.45]
-obs_pos_3_opti = [-0.82, 0.23, 0.45]
-obs_pos_4_opti = [0.23, 0.51, 0.45]
-obs_pos_5_opti = [0.42, -0.87, 0.45]
-obs_pos_6_opti = [1.14, 0.17, 0.32]
+obs_pos_1_opti = [0., 0., 0.45]
+# obs_pos_2_opti = [-1.21, 1.62, 0.45]
+# obs_pos_3_opti = [-0.83, 0.24, 0.45]
+# obs_pos_4_opti = [0.24, 0.50, 0.45]
+# obs_pos_5_opti = [0.42, -0.87, 0.45]
+# obs_pos_6_opti = [1.14, 0.16, 0.32]
 
 obs_dict = {"obs1":{"type":"box", "center":pos_cal(obs_pos_1_opti, 0), 
                     "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0, "fixed":True}, 
-            "obs2":{"type":"box", "center":pos_cal(obs_pos_2_opti, 0), 
-                    "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0., "fixed":True},
-            "obs3":{"type":"box", "center":pos_cal(obs_pos_3_opti, 0), 
-                    "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0, "fixed":True},
-            "obs4":{"type":"box", "center":pos_cal(obs_pos_4_opti, 0), 
-                    "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0, "fixed":True},
-            "obs5":{"type":"box", "center":pos_cal(obs_pos_5_opti, 0), 
-                    "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0., "fixed":True},
-            "obs6":{"type":"box", "center":pos_cal(obs_pos_6_opti, 0), 
-                    "half_extend":[0.165, 0.165, 0.165], "yaw_rad":0., "fixed":True}
+            # "obs2":{"type":"box", "center":pos_cal(obs_pos_2_opti, 0), 
+            #         "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0., "fixed":True},
+            # "obs3":{"type":"box", "center":pos_cal(obs_pos_3_opti, 0), 
+            #         "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0, "fixed":True},
+            # "obs4":{"type":"box", "center":pos_cal(obs_pos_4_opti, 0), 
+            #         "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0, "fixed":True},
+            # "obs5":{"type":"box", "center":pos_cal(obs_pos_5_opti, 0), 
+            #         "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0., "fixed":True},
+            # "obs6":{"type":"box", "center":pos_cal(obs_pos_6_opti, 0), 
+            #         "half_extend":[0.165, 0.165, 0.165], "yaw_rad":0., "fixed":True}
             }
 
 mid_waypts = [
-    [-1.40, 0.25, 0.5],
-    [-0.28, 0.28, 0.5],
-    [0.79, -1.49, 0.5],
-    [0.99, 0.73, 0.5]
+    [-0.93, 1.05, 0.5],
+    [0.20, -1.19, 0.5],
+    [1.06, 0.29, 0.5]
 ]
 
 for i in range(len(mid_waypts)):
@@ -184,7 +183,7 @@ def run():
                   target_acc[0], target_acc[1], target_acc[2], target_yaw, target_omega[0], target_omega[1], target_omega[2]]
         logger.log(0, curr_time, obs, target)
         timeHelper.sleep(0.05)
-        if (abs(ref_pos[0] - curr_x) <= 0.03) and (abs(ref_pos[1] - curr_y) <= 0.03) and (abs(ref_pos[2] - curr_z) <= 0.05):
+        if (abs(ref_pos[0] - curr_x) <= 0.03) and (abs(ref_pos[1] - curr_y) <= 0.03) and (abs(ref_pos[2] - curr_z) <= 0.05) or (curr_z <= 0.05):
             logger.save(new_feature=resample)
             timeHelper.sleep(0.05)
             break

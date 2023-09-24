@@ -7,7 +7,7 @@ class Resampler:
     def __init__(self, dt, type: str):
         self.type = type
         self.dt = dt
-        self.time_ahead = 0.08
+        self.time_ahead = 0.15
         if type == "adapt":
             pid_sampler_params = {
                 'max_acc_pred': 1.3,
@@ -18,7 +18,7 @@ class Resampler:
                                         # calculate trajectory bending degree
                 'l_error_weight': 2., # assume the weight of s_error is 1
                 'k_D': 0.1,
-                'error_threshold': 0.05
+                'error_threshold': 0.08
             }
             self.sampler = AdaptiveSampler(pid_sampler_params)
     

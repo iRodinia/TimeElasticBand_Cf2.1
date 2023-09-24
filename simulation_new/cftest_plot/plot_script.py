@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import axes3d
 
 def cal_len(curr_pos, tar_pos):
     return np.sqrt((curr_pos[0] - tar_pos[0]) ** 2 + (curr_pos[1] - tar_pos[1]) ** 2 + (curr_pos[2] - tar_pos[2]) ** 2 )
@@ -12,9 +13,9 @@ def vec_len(vec):
     return np.sqrt(vec[0]**2 + vec[1]**2 + vec[2]**2)
 
 
-def pos_cal(pos, mode): # mode = 1: real -> optitrack
-                        # else    : opti -> real
-    OFFSET = [0.01, -0.03, 0]
+def pos_cal(pos, mode): # mode = 1: plan -> opti
+                        # else    : opti -> plan
+    OFFSET = [-1.95, -1.89, 0.03]
     if mode == 1:
         return [pos[0] + OFFSET[0], pos[1] + OFFSET[1], pos[2] + OFFSET[2]]
     else:
@@ -106,33 +107,32 @@ def target_modification(ref_arrow):
         x = ref_arrow[0,i]
         y = ref_arrow[1,i]
         z = ref_arrow[2,i]
-        pos_new = pos_cal([x, y, z], 1)
+        pos_new = pos_cal([x, y, z], 0)
         ref_arrow[0,i] = pos_new[0]
         ref_arrow[1,i] = pos_new[1]
         ref_arrow[2,i] = pos_new[2] + 0.02
     return ref_arrow
 
     
-obs_pos_1_opti = [1.10, 0.51, 0.45]
-obs_pos_2_opti = [2,58, 1.41, 0.45]
-obs_pos_3_opti = [2.24, 2.38, 0.45]
-obs_pos_4_opti = [1.55, 1.63, 0.45]
-obs_pos_5_opti = [0.96, 2.31, 0.45]
-obs_pos_6_opti = [0.38, 1.26, 0.32]
+obs_pos_1_opti = [-1.19, -0.70, 0.45]
+obs_pos_2_opti = [-1.21, 1.62, 0.45]
+obs_pos_3_opti = [-0.83, 0.24, 0.45]
+obs_pos_4_opti = [0.24, 0.50, 0.45]
+obs_pos_5_opti = [0.42, -0.87, 0.45]
+obs_pos_6_opti = [1.14, 0.16, 0.32]
 
-obs_dict = {"obs1":{"type":"box", "center":pos_cal(obs_pos_1_opti, 1), 
+obs_dict = {"obs1":{"type":"box", "center":pos_cal(obs_pos_1_opti, 0), 
                     "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0, "fixed":True}, 
-            "obs2":{"type":"box", "center":pos_cal(obs_pos_2_opti, 1), 
+            "obs2":{"type":"box", "center":pos_cal(obs_pos_2_opti, 0), 
                     "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0., "fixed":True},
-            "obs3":{"type":"box", "center":pos_cal(obs_pos_3_opti, 1), 
+            "obs3":{"type":"box", "center":pos_cal(obs_pos_3_opti, 0), 
                     "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0, "fixed":True},
-            "obs4":{"type":"box", "center":pos_cal(obs_pos_4_opti, 1), 
+            "obs4":{"type":"box", "center":pos_cal(obs_pos_4_opti, 0), 
                     "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0, "fixed":True},
-            "obs5":{"type":"box", "center":pos_cal(obs_pos_5_opti, 1), 
+            "obs5":{"type":"box", "center":pos_cal(obs_pos_5_opti, 0), 
                     "half_extend":[0.165, 0.165, 0.45], "yaw_rad":0., "fixed":True},
-            "obs6":{"type":"box", "center":pos_cal(obs_pos_6_opti, 1), 
+            "obs6":{"type":"box", "center":pos_cal(obs_pos_6_opti, 0), 
                     "half_extend":[0.165, 0.165, 0.165], "yaw_rad":0., "fixed":True}
-            
             }
     
 
@@ -336,8 +336,8 @@ def plot_pos_tracking_error_and_TRMSE(resampled_log, direct_log):
 
 if __name__ == '__main__':
     abs_path = os.path.abspath(os.path.dirname(__file__))
-    complete_file = abs_path + "/complete_video_remake" + ".npy"
-    fail_file = abs_path + "/fall_video" + ".npy"
+    complete_file = abs_path + "/no_resampler-09.25.2023_04.09.20" + ".npy"
+    fail_file = abs_path + "/no_resampler-09.25.2023_04.09.20" + ".npy"
 
     complete_data = np.load(complete_file, allow_pickle=True)
     fail_data = np.load(fail_file, allow_pickle=True)
