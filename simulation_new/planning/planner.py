@@ -19,7 +19,7 @@ if not os.path.exists(folder_name):
     os.mkdir(folder_name)
 
 experiment_settings = {
-    'load_trajectory': True,
+    'load_trajectory': False,
     'trajectory_filename': 'traj_video1',
     # whether load the existing trajectory or not
     'planning_algorithm': 'path_planning_and_minimum_snap',
@@ -63,6 +63,7 @@ class Planner():
         self.OBSTACLES = initial_info["nominal_obstacles_info"]
         self.MID_WAYPTS = initial_info["mid_waypoints"]
         self.logger = logger
+        self.default_resample_rate = 1.
 
         self.last_simtime = 0.
 
@@ -101,7 +102,7 @@ class Planner():
                                     "start_pos": start_pos, "stop_pos": goal_pos,
                                     "mid_waypoints": self.MID_WAYPTS,
                                     "uav_radius": 0.075, "accuracy": blank_map.cell_size,
-                                    "path_insert_point_dist_min": 0.1,"traj_max_vel": 4., "traj_gamma": 10000.}
+                                    "path_insert_point_dist_min": 0.1,"traj_max_vel": 2., "traj_gamma": 5.}
                 # fast: v_max = 9, gamma = 2*10^5
                 # normal: v_max = 4, gamma = 10^4
                 planner = TrajGenerator2(blank_map, traj_plan_params)
@@ -175,7 +176,7 @@ class Planner():
             self.s_error_buffer.append(s_error)
             self.l_error_buffer.append(l_error)
         else:
-            rate = 1.
+            rate = self.default_resample_rate
             # curr_pos = np.array([obs[0], obs[2], obs[4]])
             # ref_s = self.trajectory.eval_length(self.command_time)
             # _, s_near, pos_near = self.trajectory.closest_point_from_cartesian(curr_pos, ref_time=self.command_time)

@@ -70,16 +70,16 @@ class TrajGenerator2:
         for pt in self.mid_waypts:
             init_path.append(pt)
         init_path.append(self.stop_pos)
-        path = []
+        _path = []
         for i in range(len(init_path)-1):
             _start = (init_path[i][0], init_path[i][1], init_path[i][2])
             _stop = (init_path[i+1][0], init_path[i+1][1], init_path[i+1][2])
             raw_path = rrt_star(_start, _stop, self.map)
-            for j in range(len(raw_path)-1):
-                path.append(raw_path[j])
-        path.append(self.stop_pos)
-        s_path = path_simplification(self.map, path)
-        self.path = np.array(s_path)
+            s_path = path_simplification(self.map, raw_path)
+            for j in range(len(s_path)-1):
+                _path.append(s_path[j])
+        _path.append(self.stop_pos)
+        self.path = np.array(_path)
 
         print("\033[0;32;40mInitial feasible path found!\033[0m")
 

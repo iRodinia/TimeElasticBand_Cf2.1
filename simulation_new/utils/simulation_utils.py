@@ -5,6 +5,7 @@ import os
 import time
 import pybullet as p
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import axes3d
 from enum import Enum
 from functools import wraps
 
@@ -105,4 +106,5 @@ def draw_trajectory(waypoints,
     fig = plt.figure("Traj")
     ax = fig.add_axes([0.05, 0.05, 0.9, 0.9], projection='3d')
     ax.plot(ref_x, ref_y, ref_z)
+    plt.savefig('savefig_example.png')
     plt.show()
