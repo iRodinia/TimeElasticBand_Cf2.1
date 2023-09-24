@@ -61,6 +61,7 @@ class Planner():
         self.VERBOSE = verbose
         self.BUFFER_SIZE = buffer_size
         self.OBSTACLES = initial_info["nominal_obstacles_info"]
+        self.MID_WAYPTS = initial_info["mid_waypoints"]
         self.logger = logger
 
         self.last_simtime = 0.
@@ -88,7 +89,8 @@ class Planner():
             if experiment_settings['planning_algorithm'] == 'competition_planning':
                 # Planning method used in competition 2022
                 traj_plan_params = {"ctrl_time": self.EPISODE_LEN_SEC, "ctrl_freq": self.CTRL_FREQ,
-                                    "start_pos": start_pos, "stop_pos": goal_pos, "max_recursion_num": 3,
+                                    "start_pos": start_pos, "stop_pos": goal_pos, 
+                                    "mid_waypoints": self.MID_WAYPTS, "max_recursion_num": 3,
                                     "uav_radius": 0.075, "accuracy": blank_map.cell_size,
                                     "path_insert_point_dist_min": 0.1,"traj_max_vel": 0.5, "traj_gamma": 50}
                 planner = TrajGenerator1(blank_map, traj_plan_params)
@@ -97,6 +99,7 @@ class Planner():
                 # Planning method using a_star, rrt_relevant
                 traj_plan_params = {"ctrl_time": self.EPISODE_LEN_SEC, "ctrl_freq": self.CTRL_FREQ,
                                     "start_pos": start_pos, "stop_pos": goal_pos,
+                                    "mid_waypoints": self.MID_WAYPTS,
                                     "uav_radius": 0.075, "accuracy": blank_map.cell_size,
                                     "path_insert_point_dist_min": 0.1,"traj_max_vel": 4., "traj_gamma": 10000.}
                 # fast: v_max = 9, gamma = 2*10^5

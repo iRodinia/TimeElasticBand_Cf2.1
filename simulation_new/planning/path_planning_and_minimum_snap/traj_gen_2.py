@@ -48,6 +48,7 @@ class TrajGenerator2:
         self.path_insert_point_dist_min = params["path_insert_point_dist_min"]
         self.traj_max_vel = params["traj_max_vel"]
         self.traj_gamma = params["traj_gamma"]
+        self.mid_waypts = params["mid_waypoints"]
 
         self.map = map
         self.map.obstacle_dilation(dist=2*self.uav_radius)
@@ -65,11 +66,19 @@ class TrajGenerator2:
         return False
 
     def _find_init_path(self):
-        start = (self.start_pos[0], self.start_pos[1], self.start_pos[2])
-        stop = (self.stop_pos[0], self.stop_pos[1],self.stop_pos[2])
-        # raw_path, _ = a_star(start, stop, self.map)
-        raw_path = rrt_star(start, stop, self.map)
-        s_path = path_simplification(self.map, raw_path)
+        init_path = [self.start_pos]
+        for pt in self.mid_waypts:
+            init_path.append(pt)
+        init_path.append(self.stop_pos)
+        path = []
+        for i in range(len(init_path)-1):
+            _start = (init_path[i][0], init_path[i][1], init_path[i][2])
+            _stop = (init_path[i+1][0], init_path[i+1][1], init_path[i+1][2])
+            raw_path = rrt_star(_start, _stop, self.map)
+            for j in range(len(raw_path)-1):
+                path.append(raw_path[j])
+        path.append(self.stop_pos)
+        s_path = path_simplification(self.map, path)
         self.path = np.array(s_path)
 
         print("\033[0;32;40mInitial feasible path found!\033[0m")

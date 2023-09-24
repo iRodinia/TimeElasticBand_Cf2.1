@@ -8,7 +8,7 @@ Run as:
 """
 import os
 import sys
-sys.path.append('/home/cz_linux/Documents/TimeElasticBand_Cf2.1')
+sys.path.append(os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
 
 import numpy as np
 import math
@@ -81,6 +81,15 @@ obs_dict = {"obs1":{"type":"box", "center":pos_cal(obs_pos_1_opti, 1),
             
             }
 
+mid_waypts = [
+    [1.2, 1.3, 1.0],
+    [1.2, 1.3, 1.0],
+    [1.2, 1.3, 1.0],
+    [1.2, 1.3, 1.0]
+]
+
+
+
 # obs_dict = {}
 def run():
     """
@@ -105,7 +114,8 @@ def run():
     obs = [0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, 0]
     info = {"ctrl_timestep": 0.01, "ctrl_freq": 100, "episode_len_sec": 20, 
             "nominal_obstacles_info": obs_dict, "site_size": [3.2, 3.2, 0.9], 
-            "x_reference": [2.98, 0, 3.02, 0, 0.5, 0, 0, 0, 0, 0, 0, 0]}
+            "x_reference": [2.98, 0, 3.02, 0, 0.5, 0, 0, 0, 0, 0, 0, 0],
+            "mid_waypoints": mid_waypts}
     
     ref_pos = [info["x_reference"][0], info["x_reference"][2], info["x_reference"][4]]
     start_pos = pos_cal([obs[0], obs[2], obs[4]], 0)
