@@ -59,11 +59,11 @@ def pos_cal(pos, mode): # mode = 1: plan -> opti
     else:
         return [pos[0] - OFFSET[0], pos[1] - OFFSET[1], pos[2] - OFFSET[2]]
     
-obs_pos_1_opti = [-1.27, -0.75, 0.45]
-obs_pos_2_opti = [-0.82, 0.42, 0.45]
-obs_pos_3_opti = [0.10, 1.22, 0.45]
-obs_pos_4_opti = [0.15, 0.18, 0.45]
-obs_pos_5_opti = [0.29, -1.06, 0.45]
+obs_pos_1_opti = [-1.18, -0.73, 0.45]
+obs_pos_2_opti = [-1.24, 1.60, 0.45]
+obs_pos_3_opti = [-0.82, 0.23, 0.45]
+obs_pos_4_opti = [0.23, 0.51, 0.45]
+obs_pos_5_opti = [0.42, -0.87, 0.45]
 obs_pos_6_opti = [1.14, 0.17, 0.32]
 
 obs_dict = {"obs1":{"type":"box", "center":pos_cal(obs_pos_1_opti, 0), 
@@ -81,33 +81,28 @@ obs_dict = {"obs1":{"type":"box", "center":pos_cal(obs_pos_1_opti, 0),
             }
 
 mid_waypts = [
-    [-0.77, -0.64, 0.5],
-    [-1.26, 1.03, 0.5],
-    [0.64, 1.41, 0.5],
-    [0.02, -0.46, 0.5],
-    [0.29, -1.73, 0.5]
+    [-1.40, 0.25, 0.5],
+    [-0.28, 0.28, 0.5],
+    [0.79, -1.49, 0.5],
+    [0.99, 0.73, 0.5]
 ]
 
 for i in range(len(mid_waypts)):
     mid_waypts[i] = pos_cal(mid_waypts[i], 0)
 
 opti_start = [-1.49, -1.48, 0.5]
-opti_target = [1.41, 0.73, 0.3]
+opti_target = [0.22, 1.53, 0.3]
 
 def run():
     """
     The main function for one simulation test.
     """
-    cf_settings = os.path.abspath(os.path.dirname(__file__)) + "/crazyflies.yaml"
-    swarm = Crazyswarm(crazyflies_yaml=cf_settings)
-    timeHelper = swarm.timeHelper
-    cf = swarm.allcfs.crazyflies[0]
 
     # Load configuration.
     # CONFIG_FACTORY = ConfigFactory()
     # config = CONFIG_FACTORY.merge()
 
-    CTRL_FREQ = 25
+    CTRL_FREQ = 20
     EPISODE_LEN_SEC = 40
     
     # Height field load
@@ -130,6 +125,10 @@ def run():
     # obs = {x, x_dot, y, y_dot, z, z_dot, phi, theta, psi, p, q, r}
     commander = Planner(obs, info, verbose=False, logger=None)
 
+    cf_settings = os.path.abspath(os.path.dirname(__file__)) + "/crazyflies.yaml"
+    swarm = Crazyswarm(crazyflies_yaml=cf_settings)
+    timeHelper = swarm.timeHelper
+    cf = swarm.allcfs.crazyflies[0]
     cf.goTo(opti_start, 0., duration=5)
     timeHelper.sleep(5)
 
@@ -184,9 +183,10 @@ def run():
         target = [target_pos[0], target_pos[1], target_pos[2], target_vel[0], target_vel[1], target_vel[2],
                   target_acc[0], target_acc[1], target_acc[2], target_yaw, target_omega[0], target_omega[1], target_omega[2]]
         logger.log(0, curr_time, obs, target)
-        timeHelper.sleep(0.04)
+        timeHelper.sleep(0.05)
         if (abs(ref_pos[0] - curr_x) <= 0.03) and (abs(ref_pos[1] - curr_y) <= 0.03) and (abs(ref_pos[2] - curr_z) <= 0.05):
             logger.save(new_feature=resample)
+            timeHelper.sleep(0.05)
             break
     # Close the environment and print timing statistics.
 

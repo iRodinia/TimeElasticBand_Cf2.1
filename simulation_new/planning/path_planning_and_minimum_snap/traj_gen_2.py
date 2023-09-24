@@ -74,7 +74,7 @@ class TrajGenerator2:
         for i in range(len(init_path)-1):
             _start = (init_path[i][0], init_path[i][1], init_path[i][2])
             _stop = (init_path[i+1][0], init_path[i+1][1], init_path[i+1][2])
-            raw_path = rrt_star(_start, _stop, self.map)
+            raw_path = rrt_star_bid(_start, _stop, self.map)
             s_path = path_simplification(self.map, raw_path)
             for j in range(len(s_path)-1):
                 _path.append(s_path[j])

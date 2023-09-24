@@ -102,7 +102,7 @@ class Planner():
                                     "start_pos": start_pos, "stop_pos": goal_pos,
                                     "mid_waypoints": self.MID_WAYPTS,
                                     "uav_radius": 0.075, "accuracy": blank_map.cell_size,
-                                    "path_insert_point_dist_min": 0.1,"traj_max_vel": 2., "traj_gamma": 5.}
+                                    "path_insert_point_dist_min": 0.1,"traj_max_vel": 2.0, "traj_gamma": 15.}
                 # fast: v_max = 9, gamma = 2*10^5
                 # normal: v_max = 4, gamma = 10^4
                 planner = TrajGenerator2(blank_map, traj_plan_params)
