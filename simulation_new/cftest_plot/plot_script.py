@@ -15,7 +15,7 @@ def vec_len(vec):
 
 def pos_cal(pos, mode): # mode = 1: plan -> opti
                         # else    : opti -> plan
-    OFFSET = [-1.95, -1.89, 0.03]
+    OFFSET = [-1.95, -1.89, 0.0]
     if mode == 1:
         return [pos[0] + OFFSET[0], pos[1] + OFFSET[1], pos[2] + OFFSET[2]]
     else:
@@ -110,7 +110,7 @@ def target_modification(ref_arrow):
         pos_new = pos_cal([x, y, z], 0)
         ref_arrow[0,i] = pos_new[0]
         ref_arrow[1,i] = pos_new[1]
-        ref_arrow[2,i] = pos_new[2] + 0.02
+        ref_arrow[2,i] = pos_new[2] - 0.04
     return ref_arrow
 
     
@@ -164,6 +164,11 @@ def plot_tracking_status(resampled_log, direct_log):
     resampled_refs = target_modification(references1)
     direct_states = states2
     resampled_states = states1
+
+    legend_green = 'Reference (without RTRL)'
+    legend_orange = 'Reference (with RTRL)'
+    legend_blue = 'Actual (without RTRL)'
+    legend_red = 'Actual (with RTRL)'
 
     fig_tracking = plt.figure("Position Tracking Status", figsize=(13, 3.2))
     ax1 = fig_tracking.add_subplot(141, projection='3d')
@@ -265,10 +270,10 @@ def plot_frenet_tracking_error_and_PRMSE(resampled_log, direct_log):
     ax.plot(timestamps1, resampled_error, color='red')
     ax.plot(timestamps2, direct_error, color='blue')
     ax.set_xlabel('time /s')
-    ax.set_ylabel(r'$\Vert r-\hat{r} \Vert$ /m')
+    ax.set_ylabel(r'$\sqrt{l_e^2+d_e^2}$ /m')
 
-    print("Direct PRMSE: ", prmse2)
-    print("Resampled PRMSE: ", prmse1)
+    print("Direct LRMSE: ", prmse2)
+    print("Resampled LRMSE: ", prmse1)
 
 
 
@@ -331,21 +336,48 @@ def plot_pos_tracking_error_and_TRMSE(resampled_log, direct_log):
     print("Resampled PRMSE: ", trmse1)
 
 
+def calculate_tracking_params(resampled_log, direct_log):
+    timestamps1 = resampled_log['timestamps'][0]
+    states1 = resampled_log['states'][0]
+    references1 = resampled_log['targets'][0]
+
+    timestamps2 = direct_log['timestamps'][0]
+    states2 = direct_log['states'][0]
+    references2 = direct_log['targets'][0]
+
+    print("Original Samples Num: ", timestamps2.shape[0])
+    print("Resampled Samples Num: ", timestamps1.shape[0])
+
+    original_refs = target_modification(references2)
+    resampled_refs = target_modification(references1)
+
+    original_vel_refs = original_refs[3:6,:].T
+    original_vels = np.array([np.linalg.norm(v) for v in original_vel_refs])
+    max_original_vel = original_vels.max()
+    print("Original Planned Max Velocity: ", max_original_vel)
+
+    real_vel_refs = resampled_refs[3:6,:].T
+    real_vels = np.array([np.linalg.norm(v) for v in real_vel_refs])
+    max_real_vel = real_vels.max()
+    print("Max Velocity Commanded: ", max_real_vel)
+
 
 
 
 if __name__ == '__main__':
     abs_path = os.path.abspath(os.path.dirname(__file__))
-    complete_file = abs_path + "/no_resampler-09.25.2023_04.09.20" + ".npy"
-    fail_file = abs_path + "/no_resampler-09.25.2023_04.09.20" + ".npy"
+    complete_file = abs_path + "/with_resampler-0925-video-success" + ".npy"
+    fail_file = abs_path + "/no_resampler-0925-video-collision-1.0" + ".npy"
 
     complete_data = np.load(complete_file, allow_pickle=True)
     fail_data = np.load(fail_file, allow_pickle=True)
     # only contain: 'states', 'targets', 'timestamps'
 
+    calculate_tracking_params(complete_data, fail_data)
 
     plot_frenet_tracking_error_and_PRMSE(complete_data, fail_data)
     plot_pos_tracking_error_and_TRMSE(complete_data, fail_data)
     plot_tracking_status(complete_data, fail_data)
+
     plt.show()
 
